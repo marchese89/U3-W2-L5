@@ -1,0 +1,14 @@
+body,
+html {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(to bottom, #0074e4, #55a4e4, #b7d4e4);
+}
+.main_image {
+  font-size: 5em;
+}
+.temp {
+  font-size: 4em;
+}
