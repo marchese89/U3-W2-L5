@@ -24,3 +24,8 @@ body {
   outline: none;
   background: #b7d4e4;
 }
+
+.detail {
+  margin-bottom: 1.2em;
+  font-size: 1.2em;
+}

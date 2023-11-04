@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, FormControl } from "react-bootstrap";
+import { Alert, FormControl } from "react-bootstrap";
 
 export default function Header({ setWDetails }) {
   const delayConversion = 273.15;
-  const [query, setQuery] = useState("Spadola");
+  const [query, setQuery] = useState("Roma");
   const [error, setError] = useState(null);
   useEffect(() => {
     getCoord();
@@ -11,7 +11,7 @@ export default function Header({ setWDetails }) {
   }, []);
 
   function getDirection(deg) {
-    if (deg >= 0 && deg <= 5 && deg >= 355) {
+    if ((deg >= 0 && deg <= 5) || deg >= 355) {
       return "N";
     }
     if (deg > 5 && deg < 85) {
@@ -36,7 +36,6 @@ export default function Header({ setWDetails }) {
       return "NO";
     }
   }
-
   async function getCoord() {
     try {
       const response = await fetch(
@@ -51,19 +50,17 @@ export default function Header({ setWDetails }) {
         setError("Errore nel recupero dei dati");
       }
     } catch (error) {
-      console.log("ERRORE", error);
+      setError("Errore nel recupero dei dati");
     }
   }
 
   async function getWeather(lat, lon) {
-    //forecast <- previsioni per 5 giorni ogni 3 ore
     try {
       const response = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=1e980e3f1f0cc68d67286f66e4d8c151`
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setWDetails({
           temp_percep: parseInt(
             parseFloat(data.main.feels_like) - delayConversion
@@ -98,14 +95,11 @@ export default function Header({ setWDetails }) {
       <div className="container justify-content-center w-50">
         <div className="d-flex justify-content-center">
           <FormControl
-            className="me-4 input"
+            className="input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyPress}
           />
-          <Button variant="info" onClick={getCoord}>
-            Cerca
-          </Button>
         </div>
         {error && (
           <Alert
