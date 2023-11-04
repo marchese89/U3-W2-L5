@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { Button, FormControl } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Alert, Button, FormControl } from "react-bootstrap";
 
 export default function Header({ setWDetails }) {
   const delayConversion = 273.15;
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("Spadola");
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    getCoord();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function getDirection(deg) {
     if (deg >= 0 && deg <= 5 && deg >= 355) {
@@ -40,8 +45,10 @@ export default function Header({ setWDetails }) {
       if (response.ok) {
         const data = await response.json();
         getWeather(data.coord.lat, data.coord.lon);
+        setError(null);
       } else {
-        throw new Error("Errore nella fetch");
+        // throw new Error("Errore nella fetch");
+        setError("Errore nel recupero dei dati");
       }
     } catch (error) {
       console.log("ERRORE", error);
@@ -73,10 +80,10 @@ export default function Header({ setWDetails }) {
           name: data.name,
         });
       } else {
-        throw new Error("Errore nella fetch");
+        setError("Errore nel recupero dei dati");
       }
     } catch (error) {
-      console.log("ERRORE", error);
+      setError("Errore nel recupero dei dati");
     }
   }
 
@@ -89,9 +96,9 @@ export default function Header({ setWDetails }) {
   return (
     <>
       <div className="container justify-content-center w-50">
-        <div className="d-flex">
+        <div className="d-flex justify-content-center">
           <FormControl
-            className="me-4"
+            className="me-4 input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyPress}
@@ -100,6 +107,14 @@ export default function Header({ setWDetails }) {
             Cerca
           </Button>
         </div>
+        {error && (
+          <Alert
+            variant="danger"
+            className="d-flex justify-content-center my-3 py-3 rounded-3"
+          >
+            {error}
+          </Alert>
+        )}
       </div>
     </>
   );
