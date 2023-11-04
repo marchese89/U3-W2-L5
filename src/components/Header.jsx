@@ -73,7 +73,7 @@ export default function Header({ setWDetails }) {
           w_main: data.weather[0].main,
           w_description: data.weather[0].description,
           w_direction: getDirection(data.wind.deg),
-          w_speed: data.wind.speed,
+          w_speed: Math.round(parseFloat(data.wind.speed) * 3.6), //conversione tra m/s e km/h
           name: data.name,
         });
       } else {

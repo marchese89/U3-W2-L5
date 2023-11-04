@@ -40,7 +40,7 @@ export default function WetherDeails({ w_details }) {
             Pressione Atmosferica: {w_details.pressure} hPa
           </div>
           <div className="detail">
-            Vento: {w_details.w_speed} m/s (velocità) | {w_details.w_direction}{" "}
+            Vento: {w_details.w_speed} Km/h (velocità) | {w_details.w_direction}{" "}
             (direzione)
           </div>
         </div>
